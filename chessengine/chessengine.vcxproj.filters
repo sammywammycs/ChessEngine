@@ -21,9 +21,15 @@
     <ClCompile Include="output.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="piecemoves.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="output.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="piecemoves.h">
       <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>

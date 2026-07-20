@@ -104,6 +104,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -129,9 +130,11 @@
   <ItemGroup>
     <ClCompile Include="main.cpp" />
     <ClCompile Include="output.cpp" />
+    <ClCompile Include="piecemoves.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="output.h" />
+    <ClInclude Include="piecemoves.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

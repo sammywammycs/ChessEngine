@@ -1,61 +1,40 @@
 #include <iostream>
 #include <cmath>
 #include <vector>
+#include <chrono>
+#include <bit>
 #include "output.h"
+#include "piecemoves.h"
 
 using namespace std;
 
-float eval(long long whitePieces[6], long long blackPieces[6]) {
-	return 0;
-}
-
-long long moveList(long long whitepawns) {
-	int pawns = 0;
-
-	cout << whitepawns << endl;
-
-	for (int i = 0; i < 64; i++) {
-		int temp = pow(2, i);
-		if ((whitepawns & temp) > 0){
-			pawns++;
-		}
-	}
-
-	std::vector<long long> pawnsPos;
-
-	for (int i = 0; i < 64; i++) {
-		int temp = pow(2, i);
-		if ((whitepawns & temp) > 0) {
-			pawnsPos.push_back(pow(2,i));
-		}
-	}
-
-	std::vector<long long> moveArr;
-
-	for (long long x : pawnsPos) {
-		moveArr.push_back((x * 256) + x);
-		moveArr.push_back((x * 256 * 256) + x);
-	}
-
-	std::vector<long long> stateAfterMove;
+float eval(long long whitePieces[6]) {
+	auto start = chrono::high_resolution_clock::now();
+	float evaluation = 0;
 	
-	for (long long x : moveArr) {
-		stateAfterMove.push_back(whitepawns ^ x);
-	}
+	evaluation += 1 * popcount(static_cast<unsigned long long>(whitePieces[0]));
+	evaluation += 3 * popcount(static_cast<unsigned long long>(whitePieces[1]));
+	evaluation += 3 * popcount(static_cast<unsigned long long>(whitePieces[2]));
+	evaluation += 5 * popcount(static_cast<unsigned long long>(whitePieces[3]));
+	evaluation += 9 * popcount(static_cast<unsigned long long>(whitePieces[4]));
 
-	for (long long x : stateAfterMove) {
-		cout << x << endl;
-	}
-
-	printBinaryGrid(stateAfterMove[3]);
-
-	return 0;
-
+	return evaluation;
 }
 
 int main() {
 	long long whitepawns = 65280;
-	long long checkpawn = 1024;
-	moveList(whitepawns);
+	long long whiteknight = 66;
+	long long whitebishop = 36;
+	long long whiterook = 129;
+	long long whitequeen = 16;
+	long long whiteking = 8;
+
+	long long whitePosition[6] = { whitepawns, whiteknight, whitebishop, whiterook, whitequeen, whiteking };
+
+	cout << pawnMoves(whitepawns)[6] << endl;
+	printBinaryGrid(pawnMoves(whitepawns)[6]);
+	printBinaryGrid(whitepawns ^ pawnMoves(whitepawns)[6]);
+
+
 	return 0;
 }
