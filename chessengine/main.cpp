@@ -9,7 +9,6 @@
 using namespace std;
 
 float eval(long long whitePieces[6]) {
-	auto start = chrono::high_resolution_clock::now();
 	float evaluation = 0;
 	
 	evaluation += 1 * popcount(static_cast<unsigned long long>(whitePieces[0]));
@@ -22,6 +21,13 @@ float eval(long long whitePieces[6]) {
 }
 
 int main() {
+	using std::chrono::high_resolution_clock;
+	using std::chrono::duration_cast;
+	using std::chrono::duration;
+	using std::chrono::microseconds;
+
+	auto start = chrono::high_resolution_clock::now();
+
 	long long whitepawns = 65280;
 	long long whiteknight = 66;
 	long long whitebishop = 36;
@@ -31,10 +37,18 @@ int main() {
 
 	long long whitePosition[6] = { whitepawns, whiteknight, whitebishop, whiterook, whitequeen, whiteking };
 
-	cout << pawnMoves(whitepawns)[6] << endl;
-	printBinaryGrid(pawnMoves(whitepawns)[6]);
-	printBinaryGrid(whitepawns ^ pawnMoves(whitepawns)[6]);
+	auto start1 = chrono::high_resolution_clock::now();
+	std::vector<long long> pawnmoves = pawnMoves(whitepawns);
+	auto end1 = chrono::high_resolution_clock::now();
+	auto length1 = duration_cast<microseconds>(end1 - start1);
 
+	auto start2 = chrono::high_resolution_clock::now();
+	std::vector<long long> bishopmoves = bishopMoves(whitebishop);
+	auto end2 = chrono::high_resolution_clock::now();
+	auto length2 = duration_cast<microseconds>(end2 - start2);
+
+	cout << "pawns took " << length1.count() << "microsends" << endl;
+	cout << "bishops took " << length2.count() << "microsends" << endl;
 
 	return 0;
 }

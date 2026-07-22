@@ -12,4 +12,5 @@ void printBinaryGrid(long long num) {
         }
         std::cout << std::endl;
     }
+    std::cout << std::endl;
 }
