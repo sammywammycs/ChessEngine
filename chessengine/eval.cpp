@@ -14,10 +14,9 @@ float pawnClosetoCentre(long long pawnPos) {
 	if ((x == 4) || (x == 5) && (y == 4)) {
 		return 1.5;
 	}
-
 }
 
-float eval(std::vector<long long> whitePieces, std::vector<long long> blackPieces) {
+float eval(vector<long long> whitePieces, vector<long long> blackPieces) {
 	float evaluation = 0;
 	vector<long long> whitePawnPositions = getPositions(whitePieces[0]);
 	vector<long long> blackPawnPositions = getPositions(blackPieces[0]);

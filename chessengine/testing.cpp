@@ -10,6 +10,7 @@
 using namespace std;
 
 int test() {
+	/*
 	using std::chrono::high_resolution_clock;
 	using std::chrono::duration_cast;
 	using std::chrono::duration;
@@ -33,7 +34,7 @@ int test() {
 	vector<long long> blackPieces = { blackpawns, blackknight, blackbishop, blackrook, blackqueen, blackking };
 
 	auto start1 = chrono::high_resolution_clock::now();
-	std::vector<long long> pawnmoves = pawnMoves(whitepawns);
+	std::vector<long long> pawnmoves = whitepawnMoves(whitepawns);
 	auto end1 = chrono::high_resolution_clock::now();
 	auto length1 = duration_cast<microseconds>(end1 - start1);
 
@@ -68,4 +69,8 @@ int test() {
 	cout << "rooks took " << length4.count() << "microseconds" << endl;
 	cout << "queen took " << length5.count() << "microseconds" << endl;
 	cout << "king took " << length6.count() << "microseconds" << endl;
+
+	*/
+
+	return 0;
 }

@@ -5,12 +5,16 @@
 
 #include <vector>
 
-std::vector<long long> pawnMoves(long long pawnsPos);
-std::vector<long long> bishopMoves(long long bishopPos);
-std::vector<long long> knightMoves(long long knightPos);
-std::vector<long long> rookMoves(long long rookPos);
-std::vector<long long> queenMoves(long long queenPos);
-std::vector<long long> kingMoves(long long kingPos);
-std::vector<long long> getPositions(long long piecePositions);
+using namespace std;
+
+vector<long long> whitepawnMoves(long long pawnsPos, vector<long long> whitePieces, vector<long long> blackPieces);
+vector<long long> blackpawnMoves(long long pawnsPos, vector<long long> whitePieces, vector<long long> blackPieces);
+vector<long long> bishopMoves(long long bishopPos, vector<long long> whitePieces, vector<long long> blackPieces);
+vector<long long> knightMoves(long long knightPos, vector<long long> whitePieces, vector<long long> blackPieces);
+vector<long long> rookMoves(long long rookPos, vector<long long> whitePieces, vector<long long> blackPieces);
+vector<long long> queenMoves(long long queenPos, vector<long long> whitePieces, vector<long long> blackPieces);
+vector<long long> kingMoves(long long kingPos, vector<long long> whitePieces, vector<long long> blackPieces);
+vector<long long> getPositions(long long piecePositions);
+long long getColision(long long piecePos, vector<long long> allpieces);
 
 #endif
