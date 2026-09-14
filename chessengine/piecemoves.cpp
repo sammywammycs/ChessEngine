@@ -2,9 +2,22 @@
 #include "piecemoves.h"
 #include <vector>
 #include <cmath>
+#include <bit>
 #include "output.h"
 
 using namespace std;
+
+long long bitMap(vector<long long> whitePieces, vector<long long> blackPieces) {
+	long long temp = 0;
+	for (long long piece : whitePieces) {
+		temp += piece;
+	}
+	for (long long piece : blackPieces) {
+		temp += piece;
+	}
+
+	return temp;
+}
 
 long long getColision(long long moveEnd, vector<long long> pieces) {
 	long long bitboard = 0;
@@ -61,66 +74,56 @@ vector<long long> bishopMoves(long long bishopPos, vector<long long> yourPieces,
 	vector<long long> moveArr;
 
 	for (long long x : indivBishopPos) {
-		int logpower = fmod(log2(x),8);
-		int logpowerfloor = std::floor(log2(x) / 8);
+		int idx = std::countr_zero((unsigned long long)x);
+		int file = idx % 8;
+		int rank = idx / 8;
 
-		long long temp = x * 512;
-		long long temp2 = x * 128;
-		long long temp3 = x / 512;
-		long long temp4 = x / 128;
-
-		for (int i = 1; i < 7 - logpower; i++) {
-			if (getColision(temp, yourPieces)) {
-				break;
-			}
-			else if (getColision(temp, oppPieces)) {
+		{
+			long long temp = x;
+			int steps = min(7 - file, 7 - rank);
+			for (int i = 0; i < steps; i++) {
+				temp *= 512;
+				if (getColision(temp, yourPieces)) break;
+				bool hitOpp = getColision(temp, oppPieces);
 				moveArr.push_back(temp + x);
-				break;
+				if (hitOpp) break;
 			}
-			moveArr.push_back(temp + x);
-			temp *= 512;
 		}
-
-		for (int i = 1; i < logpower + 1; i++) {
-			if (getColision(temp2, yourPieces)) {
-				break;
+		{
+			long long temp = x;
+			int steps = min(file, 7 - rank);
+			for (int i = 0; i < steps; i++) {
+				temp *= 128;
+				if (getColision(temp, yourPieces)) break;
+				bool hitOpp = getColision(temp, oppPieces);
+				moveArr.push_back(temp + x);
+				if (hitOpp) break;
 			}
-			else if (getColision(temp2, oppPieces)) {
-				moveArr.push_back(temp2 + x);
-				break;
-			}
-			moveArr.push_back(temp2 + x);
-			temp2 *= 128;
 		}
-
-		int lim1 = min(logpower, logpowerfloor);
-		int lim2 = min(8 - logpower, logpowerfloor);
-
-		for (int i = 0; i < lim1; i++) {
-			if (getColision(temp3, yourPieces)) {
-				break;
+		{
+			long long temp = x;
+			int steps = min(7 - file, rank);
+			for (int i = 0; i < steps; i++) {
+				temp /= 128;
+				if (getColision(temp, yourPieces)) break;
+				bool hitOpp = getColision(temp, oppPieces);
+				moveArr.push_back(temp + x);
+				if (hitOpp) break;
 			}
-			else if (getColision(temp3, oppPieces)) {
-				moveArr.push_back(temp3 + x);
-				break;
-			}
-			moveArr.push_back(temp3 + x);
-			temp3 /= 512;
 		}
-
-		for (int i = 0; i < lim1; i++) {
-			if (getColision(temp4, yourPieces)) {
-				break;
+		{
+			long long temp = x;
+			int steps = min(file, rank);
+			for (int i = 0; i < steps; i++) {
+				temp /= 512;
+				if (getColision(temp, yourPieces)) break;
+				bool hitOpp = getColision(temp, oppPieces);
+				moveArr.push_back(temp + x);
+				if (hitOpp) break;
 			}
-			else if (getColision(temp4, oppPieces)) {
-				moveArr.push_back(temp4 + x);
-				break;
-			}
-			moveArr.push_back(temp4 + x);
-			temp4 /= 128;
 		}
-
 	}
+
 	return moveArr;
 }
 
@@ -214,11 +217,11 @@ vector<long long> rookMoves(long long rookPos, vector<long long> yourPieces, vec
 	return moveArr;
 }
 
-vector<long long> queenMoves(long long queenPos, vector<long long> whitePieces, vector<long long> blackPieces) {
+vector<long long> queenMoves(long long queenPos, vector<long long> yourPieces, vector<long long> oppPieces) {
 	vector<long long> moveArr;
 
-	vector<long long> diagmoves = bishopMoves(queenPos, whitePieces, blackPieces);
-	vector<long long> sidemoves = rookMoves(queenPos, whitePieces, blackPieces);
+	vector<long long> diagmoves = bishopMoves(queenPos, yourPieces, oppPieces);
+	vector<long long> sidemoves = rookMoves(queenPos, yourPieces, oppPieces);
 
 	for (long long x : diagmoves) {
 		moveArr.push_back(x);
@@ -252,4 +255,41 @@ vector<long long> kingMoves(long long kingPos, vector<long long> yourPieces, vec
 	if (left > 0 && down > 0 && !(getColision(kingPos / 128, yourPieces))) { moveArr.push_back(kingPos + (kingPos / 128)); }
 
 	return moveArr;
+}
+
+vector<long long> getMoves(vector<long long> yourPieces, vector<long long> oppPieces, bool white) {
+	vector<long long> legalMoves;
+
+	if (white) {
+		vector<long long> pawns = whitepawnMoves(yourPieces[0], yourPieces, oppPieces);
+		vector<long long> bishop =  bishopMoves(yourPieces[2], yourPieces, oppPieces);
+		vector<long long> knight = knightMoves(yourPieces[1], yourPieces, oppPieces);
+		vector<long long> rook = rookMoves(yourPieces[3], yourPieces, oppPieces);
+		vector<long long> queen = queenMoves(yourPieces[4], yourPieces, oppPieces);
+		vector<long long> king = kingMoves(yourPieces[5], yourPieces, oppPieces);
+
+		for (long long x : pawns) { legalMoves.push_back(x); }
+		for (long long x : bishop) { legalMoves.push_back(x); }
+		for (long long x : knight) { legalMoves.push_back(x); }
+		for (long long x : rook) { legalMoves.push_back(x); }
+		for (long long x : queen) { legalMoves.push_back(x); }
+		for (long long x : king) { legalMoves.push_back(x); }
+	}
+	else {
+		vector<long long> pawns = blackpawnMoves(yourPieces[0], oppPieces, yourPieces);
+		vector<long long> bishop = bishopMoves(yourPieces[2], yourPieces, oppPieces);
+		vector<long long> knight = knightMoves(yourPieces[1], yourPieces, oppPieces);
+		vector<long long> rook = rookMoves(yourPieces[3], yourPieces, oppPieces);
+		vector<long long> queen = queenMoves(yourPieces[4], yourPieces, oppPieces);
+		vector<long long> king = kingMoves(yourPieces[5], yourPieces, oppPieces);
+	
+		for (long long x : pawns) { legalMoves.push_back(x); }
+		for (long long x : bishop) { legalMoves.push_back(x); }
+		for (long long x : knight) { legalMoves.push_back(x); }
+		for (long long x : rook) { legalMoves.push_back(x); }
+		for (long long x : queen) { legalMoves.push_back(x); }
+		for (long long x : king) { legalMoves.push_back(x); }
+	}
+
+	return legalMoves;
 }

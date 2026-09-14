@@ -5,7 +5,7 @@
 
 #include <vector>
 
-float eval(std::vector<long long> whitePieces, std::vector<long long> blackPieces);
-float pawnClosetoCentre(long long pawnPos);
+int eval(std::vector<long long> whitePieces, std::vector<long long> blackPieces);
+int pawnClosetoCentre(long long pawnPos);
 
 #endif

@@ -130,12 +130,14 @@
   <ItemGroup>
     <ClCompile Include="eval.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="moveFinder.cpp" />
     <ClCompile Include="output.cpp" />
     <ClCompile Include="piecemoves.cpp" />
     <ClCompile Include="testing.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="eval.h" />
+    <ClInclude Include="moveFinder.h" />
     <ClInclude Include="output.h" />
     <ClInclude Include="piecemoves.h" />
   </ItemGroup>
